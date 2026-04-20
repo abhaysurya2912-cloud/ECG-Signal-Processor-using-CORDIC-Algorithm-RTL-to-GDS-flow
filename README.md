@@ -10,7 +10,7 @@
 2. [Block Diagram](#block-diagram)
 3. [CORDIC Algorithm — Theory](#cordic-algorithm--theory)
 4. [ECG Signal Processing Pipeline](#ecg-signal-processing-pipeline)
-5. [Repository Structure](#repository-structure)
+5. [ECG Signal Extraction from MIT-BIH Database[(#ECG-Signal-Extraction-from-MIT-BIH-Database)
 6. [RTL Design](#rtl-design)
    - [Top-Level: qrs_cordic_detector](#top-level-qrs_cordic_detector)
    - [Bandpass Filter (5-15 Hz)](#bandpass-filter-515-hz)
@@ -22,17 +22,13 @@
 7. [Testbench](#testbench)
 8. [Functional Simulation](#functional-simulation)
 9. [Synthesis](#synthesis)
-10. [Design for Testability (DFT)](#design-for-testability-dft)
-11. [Static Timing Analysis (STA)](#static-timing-analysis-sta)
-12. [Formal Verification](#formal-verification)
-13. [Physical Design (PnR)](#physical-design-pnr)
+10. [Placement](#Placement)
+11. [CTS](#CTS)
+12. [Routing](#Routing)
+13. [DRC-Connectivity-Verification](#DRC-Connectivity-verification)
 14. [Sign-off and GDS Generation](#sign-off-and-gds-generation)
-15. [Tool Flow Summary](#tool-flow-summary)
-16. [Results and Reports](#results-and-reports)
-17. [How to Run](#how-to-run)
-18. [Dependencies and Setup](#dependencies-and-setup)
-19. [Future Work](#future-work)
-20. [References](#references)
+15. [Results and Reports](#results-and-reports)
+16. [References](#references)
 
 ---
 
@@ -135,72 +131,6 @@ Computes RMSSD, SDNN, pNN50, and Pearson Correlation Coefficient between consecu
 
 ---
 
-## Repository Structure
-
-```
-ECG-Signal-Processor-using-CORDIC-Algorithm-RTL-to-GDS-flow/
-│
-├── docs/
-│   ├── block_diagram.png
-│   └── final_report.pdf
-│
-├── rtl/
-│   ├── qrs_cordic_detector.v       # Top-level integration
-│   ├── bandpass_filter_5_15.v      # 5-tap FIR bandpass filter
-│   ├── cordic_mag_pipelined.v      # 16-stage pipelined CORDIC core
-│   ├── qrs_peak_detect.v           # Hysteresis R-peak detector
-│   ├── rr_bpm_calc.v               # RR interval and BPM calculator
-│   ├── isqrt32.v                   # Integer square root (32-to-16 bit)
-│   └── hrv_metrics.v               # HRV: RMSSD, SDNN, pNN50, correlation
-│
-├── tb/
-│   ├── tb_qrs_final_display.sv     # Full-chip SystemVerilog testbench
-│   └── ecg_samples/
-│       ├── 100_ecg.txt             # MIT-BIH Record 100 samples (integer)
-│       └── generate_ecg_txt.py     # Script to generate 100_ecg.txt
-│
-├── constraints/
-│   └── ecg_top.sdc
-│
-├── synthesis/
-│   ├── scripts/dc_synthesis.tcl
-│   ├── netlists/ecg_top_synth.v
-│   └── reports/
-│       ├── timing_report.txt
-│       ├── area_report.txt
-│       └── power_report.txt
-│
-├── dft/
-│   ├── scripts/dft_compiler.tcl
-│   ├── netlists/ecg_top_scan.v
-│   ├── def/ecg_top_scan.def
-│   └── reports/
-│       ├── dft_drc_report.txt
-│       └── scan_coverage_report.txt
-│
-├── sta/
-│   ├── scripts/primetime_sta.tcl
-│   └── reports/
-│       ├── setup_timing.rpt
-│       └── hold_timing.rpt
-│
-├── pnr/
-│   ├── scripts/innovus_pnr.tcl
-│   └── reports/area_utilization.rpt
-│
-├── signoff/
-│   ├── scripts/
-│   │   ├── calibre_drc.tcl
-│   │   └── calibre_lvs.tcl
-│   └── gds/ecg_top_final.gds
-│
-├── sim/
-│   ├── run_sim.sh
-│   └── waves/
-│
-├── Makefile
-└── README.md
-```
 
 ---
 
