@@ -68,6 +68,8 @@ The design is taken through a complete **RTL-to-GDS (tape-out-ready) physical de
 
 ## CORDIC Algorithm — Theory
 
+<img src="Screenshot 2026-04-20 183536.png" width="300">
+
 The **CORDIC (Coordinate Rotation Digital Computer)** algorithm computes trigonometric, hyperbolic, and vector magnitude functions using only **additions, subtractions, and bit shifts** — making it ideal for resource-constrained hardware with no dedicated multiplier units.
 
 ### Vector Mode — used in this design
