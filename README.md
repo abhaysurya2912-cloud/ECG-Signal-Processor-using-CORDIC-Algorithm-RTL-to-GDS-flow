@@ -742,33 +742,7 @@ endmodule
 
 ## Testbench
 
-### Generating the Input File
 
-```python
-# tb/ecg_samples/generate_ecg_txt.py
-import wfdb
-
-record = wfdb.rdrecord('100', sampto=3600, pn_dir='mitdb')
-samples = record.p_signal[:, 0]          # Channel 0 (MLII lead)
-adc = (samples * 200).astype(int)        # Scale to integer range
-with open('100_ecg.txt', 'w') as f:
-    for s in adc:
-        f.write(f'{s}\n')
-```
-
-Run once before simulation:
-```bash
-pip install wfdb numpy
-python3 tb/ecg_samples/generate_ecg_txt.py
-cp tb/ecg_samples/100_ecg.txt sim/
-```
-
-### Output Files
-
-| File | Content |
-|------|---------|
-| `detection_samples.txt` | Sample index of each detected R-peak (one per line) |
-| `final_summary.txt` | CSV-style key-value metrics summary |
 
 ### Testbench Code
 
