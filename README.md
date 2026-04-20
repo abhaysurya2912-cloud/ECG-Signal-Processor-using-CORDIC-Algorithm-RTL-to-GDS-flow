@@ -21,14 +21,15 @@
    - [HRV Metrics Module](#hrv-metrics-module)
 7. [Testbench](#testbench)
 8. [Functional Simulation](#functional-simulation)
-9. [Synthesis](#synthesis)
-10. [Placement](#Placement)
-11. [CTS](#CTS)
-12. [Routing](#Routing)
-13. [DRC-Connectivity-Verification](#DRC-Connectivity-verification)
-14. [Sign-off and GDS Generation](#sign-off-and-gds-generation)
-15. [Results and Reports](#results-and-reports)
-16. [References](#references)
+9. [Pantopkins Algorithm functional verification](#Pantopkins-Algorithm-functional-verification)
+10. [Synthesis](#synthesis)
+11. [Placement](#Placement)
+12. [CTS](#CTS)
+13. [Routing](#Routing)
+14. [DRC-Connectivity-Verification](#DRC-Connectivity-verification)
+15. [Sign-off and GDS Generation](#sign-off-and-gds-generation)
+16. [Results and Reports](#results-and-reports)
+17. [References](#references)
 
 ---
 
@@ -131,6 +132,21 @@ Computes RMSSD, SDNN, pNN50, and Pearson Correlation Coefficient between consecu
 
 ---
 
+##ECG Signal Extraction from MIT-BIH Database
+
+We focused on extracting and analyzing ECG (Electrocardiogram) signals from the MIT-BIH Arrhythmia Database using MATLAB.
+
+The ECG signal files are downloaded from the database and processed using MATLAB code. The program reads the raw signal data, extracts useful ECG samples, and converts them into a simple .txt format for easy viewing and further analysis.
+
+This helps in understanding heart signal patterns and can be useful for applications like arrhythmia detection and biomedical signal processing.
+
+[MIT-BIH Arrhythmia Database](https://physionet.org/content/mitdb/1.0.0/)
+
+Below MATLAB code is used to convert raw ECG signal format to .txt format.
+
+```MATLAB
+work to be done
+```
 
 ---
 
