@@ -142,10 +142,24 @@ This helps in understanding heart signal patterns and can be useful for applicat
 
 [MIT-BIH Arrhythmia Database](https://physionet.org/content/mitdb/1.0.0/)
 
-Below MATLAB code is used to convert raw ECG signal format to .txt format.
+Below MATLAB code is used to convert raw ECG signal format to .txt format which is finally fed to the design.
 
 ```MATLAB
-work to be done
+clc; clear;
+
+fs = 360;   % Sampling frequency (optional, if needed later)
+
+% Load ECG data from .dat file
+% Replace '100.dat' with your actual file name
+ecg = load('100.dat');
+
+% Convert to column vector
+ecg = ecg(:);
+
+% Save full data into .txt file
+writematrix(ecg, '100_ecg.txt');
+
+fprintf('.txt file generated successfully: %d samples saved\n', length(ecg));
 ```
 
 ---
