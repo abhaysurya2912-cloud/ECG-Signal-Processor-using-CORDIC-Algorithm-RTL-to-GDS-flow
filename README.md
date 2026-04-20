@@ -138,8 +138,6 @@ Computes RMSSD, SDNN, pNN50, and Pearson Correlation Coefficient between consecu
 
 ### Top-Level: qrs_cordic_detector
 
-**File:** `rtl/qrs_cordic_detector.v`
-
 The top-level module instantiates and wires all sub-modules in the signal processing pipeline.
 
 ```verilog
@@ -280,8 +278,6 @@ endmodule
 
 ### Bandpass Filter (5–15 Hz)
 
-**File:** `rtl/bandpass_filter_5_15.v`
-
 5-tap symmetric FIR filter. Suppresses baseline wander and high-frequency noise outside the QRS band.
 
 ```verilog
@@ -331,8 +327,6 @@ endmodule
 ---
 
 ### Pipelined CORDIC Magnitude
-
-**File:** `rtl/cordic_mag_pipelined.v`
 
 16-stage fully pipelined CORDIC core in vector mode. Each stage implements one micro-rotation. Latency = ITER clock cycles; throughput = 1 result per clock after pipeline fill.
 
@@ -392,8 +386,6 @@ endmodule
 ---
 
 ### QRS R-Peak Detector
-
-**File:** `rtl/qrs_peak_detect.v`
 
 Dual-threshold hysteresis detector with post-detection refractory period.
 
@@ -458,8 +450,6 @@ endmodule
 
 ### RR Interval and BPM Calculator
 
-**File:** `rtl/rr_bpm_calc.v`
-
 Counts sample ticks between consecutive R-peaks and computes the RR interval (ms) and instantaneous heart rate (BPM).
 
 ```verilog
@@ -520,8 +510,6 @@ endmodule
 
 ### Integer Square Root
 
-**File:** `rtl/isqrt32.v`
-
 Combinational 32-bit integer square root, producing a 16-bit result. Used by `hrv_metrics` for RMSSD, SDNN, and correlation denominator computation.
 
 ```verilog
@@ -561,8 +549,6 @@ endmodule
 ---
 
 ### HRV Metrics Module
-
-**File:** `rtl/hrv_metrics.v`
 
 Computes four HRV metrics using running accumulators updated on each valid RR interval. The Pearson Correlation Coefficient is computed between consecutive RR pairs, scaled by 1000 and represented as a signed 16-bit integer (range −1000 to +1000). Outputs are registered and updated after each new beat.
 
@@ -739,10 +725,6 @@ endmodule
 ---
 
 ## Testbench
-
-**File:** `tb/tb_qrs_final_display.sv`
-
-A SystemVerilog testbench that reads raw ECG integer samples from `100_ecg.txt` (MIT-BIH Record 100), drives them into the DUT one sample per clock, and collects all output metrics. Results are logged to `detection_samples.txt` and `final_summary.txt`.
 
 ### Generating the Input File
 
