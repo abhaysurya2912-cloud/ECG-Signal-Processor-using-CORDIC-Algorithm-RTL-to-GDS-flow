@@ -43,17 +43,17 @@ The design is taken through a complete **RTL-to-GDS (tape-out-ready) physical de
 
 | Parameter | Value |
 |-----------|-------|
-| Technology node | [e.g., 45 nm / 28 nm / Sky130 PDK] |
+| Technology node | GPDK 90nm |
 | Sampling frequency | 360 Hz (MIT-BIH standard) |
-| Clock frequency | [e.g., 100 MHz] |
+| Clock frequency | 200MHz |
 | CORDIC iterations | 16 |
 | Pipeline stages | 16 (fully pipelined CORDIC) |
 | Word length | 16-bit signed fixed-point |
 | Bandpass filter | 5–15 Hz, 5-tap symmetric FIR |
 | HRV metrics | RMSSD, SDNN, pNN50, Pearson Correlation |
 | Scan coverage target | ≥ 95% |
-| Core area | [fill after PnR] |
-| Power (typical) | [fill after PnR] |
+| Core area | 58389.537um^2 |
+| Power | 13.5mW|
 
 ---
 
@@ -132,7 +132,7 @@ Computes RMSSD, SDNN, pNN50, and Pearson Correlation Coefficient between consecu
 
 ---
 
-##ECG Signal Extraction from MIT-BIH Database
+## ECG Signal Extraction from MIT-BIH Database
 
 We focused on extracting and analyzing ECG (Electrocardiogram) signals from the MIT-BIH Arrhythmia Database using MATLAB.
 
