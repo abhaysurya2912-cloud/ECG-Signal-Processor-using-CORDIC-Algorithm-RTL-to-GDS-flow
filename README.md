@@ -10,7 +10,7 @@
 2. [Block Diagram](#block-diagram)
 3. [CORDIC Algorithm — Theory](#cordic-algorithm--theory)
 4. [ECG Signal Processing Pipeline](#ecg-signal-processing-pipeline)
-5. [ECG Signal Extraction from MIT-BIH Database[(#ECG-Signal-Extraction-from-MIT-BIH-Database)
+5. [ECG Signal Extraction from MIT-BIH Database](#ECG-Signal-Extraction-from-MIT-BIH-Database)
 6. [RTL Design](#rtl-design)
    - [Top-Level: qrs_cordic_detector](#top-level-qrs_cordic_detector)
    - [Bandpass Filter (5-15 Hz)](#bandpass-filter-515-hz)
