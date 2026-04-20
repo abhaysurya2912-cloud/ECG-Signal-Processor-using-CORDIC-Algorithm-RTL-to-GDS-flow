@@ -62,24 +62,7 @@ The design is taken through a complete **RTL-to-GDS (tape-out-ready) physical de
 
 ## Block Diagram
 
-```
-                    ┌─────────────────────────────────────────────────────────────┐
-                    │                 qrs_cordic_detector (Top)                   │
-                    │                                                             │
-  ecg_sample ──────►│  Bandpass Filter ──► Differentiator ──► CORDIC Magnitude  │
-  (16-bit signed)   │   (5-15 Hz FIR)      (x[n]-x[n-1])      (Pipelined, N=16)│
-                    │                                                  │          │
-                    │                                          QRS Peak Detect   │──► r_peak_pulse
-                    │                                          (Dual Threshold)  │
-                    │                                                  │          │──► rr_interval_ms
-                    │                                          RR / BPM Calc    │──► bpm
-                    │                                                  │          │──► rr_valid
-                    │                                          HRV Metrics      │──► rmssd_out
-                    │                                    (RMSSD,SDNN,pNN50,r)   │──► sdnn_out
-                    │                                                             │──► pnn50_out
-                    │                                                             │──► correlation_coeff
-                    └─────────────────────────────────────────────────────────────┘
-```
+<img src="WhatsApp Image 2026-04-19 at 11.27.33 PM.jpeg" width="300">
 
 ---
 
@@ -1399,4 +1382,3 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-*If you find this project helpful, please star the repository.*
