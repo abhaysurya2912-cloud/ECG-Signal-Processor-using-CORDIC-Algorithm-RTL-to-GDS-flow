@@ -1485,6 +1485,18 @@ Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
   <img src="100fpga.jpeg" width="45%" />
   <img src="100pan.jpeg" width="45%" />
 </p>
+
+| Parameter | Pan-Tompkins | CORDIC |
+|-----------|--------------|--------|
+| R-peaks   | 2273         | 2273   |
+| Avg BPM   | 76           | 75     |
+| Mean RR   | 795 ms       | 794 ms |
+| RMSSD     | 64.08 ms     | 63.00 ms |
+| SDNN      | 49.21 ms     | 59.00 ms |
+| pNN50     | 9.86%        | 9.00%  ||
+
+> Both methods produce nearly identical results, with minor variation in SDNN, likely due to differences in RR interval detection.
+
 <h3>Signalset 200</h3>
 Visual Representation of the Signal
 <img src="200.png" width="3000">
@@ -1493,16 +1505,76 @@ Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
   <img src="200fpga.jpeg" width="45%" />
   <img src="200pan.jpeg" width="45%" />
 </p>
+
+| Parameter | Pan-Tompkins | CORDIC (FPGA) |
+|-----------|--------------|---------------|
+| R-peaks   | 2601         | 2592          |
+| Avg BPM   | 86           | 86            |
+| Mean RR   | 695 ms       | 696 ms        |
+| RMSSD     | 317.54 ms    | 287 ms        |
+| SDNN      | 177.39 ms    | 175 ms        |
+| pNN50     | 77.32%       | 76%           |
+
+> Both methods show very close heart rate values, while slight variations in HRV metrics (RMSSD, SDNN, pNN50) are observed due to differences in R-peak detection and computation approach.
+
 <h3>Signalset 105</h3>
 Visual Representation of the Signal
 <img src="105.png" width="3000">
+Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
+<p align="center">
+  <img src="105fpga.jpeg" width="45%" />
+  <img src="105pan.jpeg" width="45%" />
+</p>
+
+| Parameter | Pan-Tompkins | CORDIC (FPGA) |
+|-----------|--------------|---------------|
+| R-peaks   | 2603         | 2551          |
+| Avg BPM   | 86           | 84            |
+| Mean RR   | 697 ms       | 707 ms        |
+| RMSSD     | 97.93 ms     | 143 ms        |
+| SDNN      | 71.35 ms     | 111 ms        |
+| pNN50     | 8.76%        | 13%           |
+
+> Heart rate parameters match well, but HRV metrics vary due to sensitivity to R-peak timing differences.
 <h3>Signalset 115</h3>
 Visual Representation of the Signal
 <img src="115.png" width="3000">
+Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
+<p align="center">
+  <img src="115fpga.jpeg" width="45%" />
+  <img src="115pan.jpeg" width="45%" />
+</p>
+
+| Parameter | Pan-Tompkins | CORDIC (FPGA) |
+|-----------|--------------|---------------|
+| R-peaks   | 3360         | 3277          |
+| Avg BPM   | 112          | 109           |
+| Mean RR   | 538 ms       | 550 ms        |
+| RMSSD     | 77.93 ms     | 135 ms        |
+| SDNN      | 53.42 ms     | 111 ms        |
+| pNN50     | 14.30%       | 13%           |
+
+> Heart rate parameters match well, but HRV metrics vary due to sensitivity to R-peak timing differences.
+
 <h3>Signalset 215</h3>
 Visual Representation of the Signal
 <img src="215.png" width="3000">
+Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
+<p align="center">
+  <img src="215fpga.jpeg" width="45%" />
+  <img src="215pan.jpeg" width="45%" />
+</p>
 
+| Parameter | Pan-Tompkins | CORDIC (FPGA) |
+|-----------|--------------|---------------|
+| R-peaks   | 1953         | 1952          |
+| Avg BPM   | 65           | 64            |
+| Mean RR   | 925 ms       | 924 ms        |
+| RMSSD     | 74.08 ms     | 79 ms         |
+| SDNN      | 87.16 ms     | 95 ms         |
+| pNN50     | 45.85%       | 46%           |
+
+> Heart rate parameters match well, but HRV metrics vary due to sensitivity to R-peak timing differences.
 ---
 
 ## Synthesis
