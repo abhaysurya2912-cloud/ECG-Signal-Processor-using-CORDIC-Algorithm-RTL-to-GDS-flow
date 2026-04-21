@@ -1477,7 +1477,7 @@ disp('RR_pt.txt saved.')
 ```
 
 ### Comparing our design with the Pantopkins Algorithm
-### Signalset 100
+<h3>Signalset 100</h3>
 Visual Representation of the Signal
 <img src="100.png" width="3000">
 Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
@@ -1485,16 +1485,21 @@ Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
   <img src="100fpga.jpeg" width="45%" />
   <img src="100pan.jpeg" width="45%" />
 </p>
-### Signalset 200
+<h3>Signalset 200</h3>
 Visual Representation of the Signal
 <img src="200.png" width="3000">
-### Signalset 105
+Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
+<p align="center">
+  <img src="200fpga.jpeg" width="45%" />
+  <img src="200pan.jpeg" width="45%" />
+</p>
+<h3>Signalset 105</h3>
 Visual Representation of the Signal
 <img src="105.png" width="3000">
-### Signalset 115
+<h3>Signalset 115</h3>
 Visual Representation of the Signal
 <img src="115.png" width="3000">
-### Signalset 215
+<h3>Signalset 215</h3>
 Visual Representation of the Signal
 <img src="215.png" width="3000">
 
