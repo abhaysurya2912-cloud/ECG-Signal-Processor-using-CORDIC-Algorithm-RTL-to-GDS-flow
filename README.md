@@ -1478,10 +1478,20 @@ disp('RR_pt.txt saved.')
 
 ### Comparing our design with the Pantopkins Algorithm
 ### Signalset 100
+Visual Representation of the Signal
+<img src="100.png" width="300">
 ### Signalset 200
+Visual Representation of the Signal
+<img src="200.png" width="300">
 ### Signalset 105
+Visual Representation of the Signal
+<img src="105.png" width="300">
 ### Signalset 108
+Visual Representation of the Signal
+<img src="Screenshot 2026-04-20 183536.png" width="300">
 ### Signalset 110
+Visual Representation of the Signal
+<img src="Screenshot 2026-04-20 183536.png" width="300">
 
 ---
 
