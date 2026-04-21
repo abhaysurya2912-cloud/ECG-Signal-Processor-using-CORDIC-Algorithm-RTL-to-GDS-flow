@@ -996,27 +996,10 @@ endmodule
 
 ### Running the Simulation
 
-```bash
-cd sim/
+Once all necessary design files are added to the Vivado working directory, the simulation is initiated using the **Run Simulation** option. The tool compiles the design and executes the simulation, after which the waveform viewer opens to display the detailed signal activity and behavior of the implemented design.
 
-# Cadence Xcelium (recommended — full SystemVerilog support)
-xrun -sv \
-  ../rtl/qrs_cordic_detector.v \
-  ../rtl/bandpass_filter_5_15.v \
-  ../rtl/cordic_mag_pipelined.v \
-  ../rtl/qrs_peak_detect.v \
-  ../rtl/rr_bpm_calc.v \
-  ../rtl/isqrt32.v \
-  ../rtl/hrv_metrics.v \
-  ../tb/tb_qrs_final_display.sv
+<img src="simulation.jpeg" width="3000">
 
-# Synopsys VCS
-vcs -full64 -sverilog ../rtl/*.v ../tb/tb_qrs_final_display.sv -o simv && ./simv
-
-# ModelSim / Questa
-vlog -sv ../rtl/*.v ../tb/tb_qrs_final_display.sv
-vsim -c tb_qrs_final_display -do "run -all; quit"
-```
 
 ## Pantopkins Algorithm functional verification
 
