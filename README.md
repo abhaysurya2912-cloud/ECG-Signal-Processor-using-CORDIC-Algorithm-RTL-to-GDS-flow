@@ -1480,6 +1480,11 @@ disp('RR_pt.txt saved.')
 ### Signalset 100
 Visual Representation of the Signal
 <img src="100.png" width="3000">
+Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
+<p align="center">
+  <img src="100fpga.jpeg" width="45%" />
+  <img src="100pan.jpeg" width="45%" />
+</p>
 ### Signalset 200
 Visual Representation of the Signal
 <img src="200.png" width="3000">
