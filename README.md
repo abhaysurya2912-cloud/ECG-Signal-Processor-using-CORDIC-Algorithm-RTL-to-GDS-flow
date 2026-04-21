@@ -1562,39 +1562,102 @@ Comparitive Analysis of result of CORDIC-ECG-Processor and Pantopkins Algorithm
 
 ## Synthesis
 
-### Tool: Synopsys Design Compiler
+### Tool: Cadence Genus
+
+The synthesis of the design was performed using **Cadence Genus**. A TCL script was used to automate the synthesis flow, which was executed using the following command:
 
 ```bash
-cd synthesis/
-dc_shell -f scripts/dc_synthesis.tcl | tee logs/dc_synthesis.log
+genus -f run.tcl
 ```
+
+### TCL Script
+A **TCL (Tool Command Language) script** is used in Cadence Genus to automate the synthesis process. Instead of manually entering commands, the entire design flow is defined in a script file (`run.tcl`), ensuring consistency, repeatability, and efficiency.
+
+The TCL script typically includes the following steps:
+
+- Reading the RTL design files (Verilog/VHDL)  
+- Specifying the target technology library  
+- Defining design constraints (timing, clock, input/output delays)  
+- Running synthesis and optimization  
+- Generating the gate-level netlist  
+- Producing reports such as area, power, and timing
+
+```tcl
+#============================================================
+# Cadence Genus TCL for QRS CORDIC Detector
+#============================================================
+
+# Read RTL
+read_hdl /home/vlsi24/Abhay/qrs_cordic_detector.v
+
+# Read standard cell library
+read_libs /home/install/FOUNDRY/digital/90nm/dig/lib/slow.lib
+
+# Elaborate top module
+elaborate qrs_cordic_detector
+
+# Read constraints
+read_sdc /home/vlsi24/Abhay/qrs_cordic_detector.sdc
+
+# Synthesis flow
+syn_generic
+syn_map
+syn_opt
+
+# Optional GUI
+# gui_show
+# gui_hide
+
+# Design checks
+check_design
+check_timing_intent
+
+# Reports
+report_qor > qrs_qor.rep
+report_timing > qrs_timing.rep
+report_power > qrs_power.rep
+report_area > qrs_area.rep
+
+# Write synthesized netlist
+write_hdl > qrs_cordic_detector_synth.v
+
+# Write final SDC
+write_sdc > qrs_cordic_detector_genus.sdc
+```
+
 
 ### Key SDC Constraints
 
 ```tcl
-# constraints/ecg_top.sdc
-create_clock -name clk -period 10.0 [get_ports clk]
-set_input_delay  2.0 -clock clk [all_inputs]
-set_output_delay 2.0 -clock clk [all_outputs]
-set_max_fanout   16  [current_design]
-set_max_transition 0.5 [current_design]
+create_clock -name clk -period 10.0 -waveform {0 5} [get_ports clk]
+
+set_input_delay  1.0 -clock clk [remove_from_collection [all_inputs] [get_ports clk]]
+set_output_delay 1.0 -clock clk [all_outputs]
+
+set_clock_uncertainty 0.2 [get_clocks clk]
+set_clock_transition 0.1 [get_clocks clk]
+
+set_load 0.05 [all_outputs]
+set_driving_cell -lib_cell BUF_X1 [remove_from_collection [all_inputs] [get_ports clk]]
 ```
 
 ### Synthesis Results
 
 | Metric | Value |
 |--------|-------|
-| Total cell area | [fill after synthesis] |
-| Combinational area | [fill] |
-| Sequential area | [fill] |
-| WNS | [fill] ns |
-| TNS | [fill] ns |
+| Total cell area | 589729.551 |
+| Combinational Instance Count | 112273  |
+| Sequential Instance Count | 1140 |
+| Power | 5.16800e-02 |
+
+### RTL view
+<img src="105.png" width="3000">
 
 ---
 
-## Design for Testability (DFT)
+## Placement
 
-### Tool: Synopsys DFT Compiler
+### Tool: Cadence Innovus
 
 ```bash
 cd dft/
