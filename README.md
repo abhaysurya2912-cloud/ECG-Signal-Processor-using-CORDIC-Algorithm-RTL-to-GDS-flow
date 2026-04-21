@@ -1651,7 +1651,7 @@ set_driving_cell -lib_cell BUF_X1 [remove_from_collection [all_inputs] [get_port
 | Power | 5.16800e-02 |
 
 ### RTL view
-<img src="105.png" width="3000">
+<img src="Screenshot from 2026-04-09 03-30-08.png" width="1000">
 
 ---
 
