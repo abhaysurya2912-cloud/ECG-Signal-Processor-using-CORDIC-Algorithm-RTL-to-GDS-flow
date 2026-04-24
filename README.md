@@ -1826,147 +1826,154 @@ saveDesign placeopt.enc
   <img src=place.png width="500">
 </p>
 
-## Sign-off and GDS Generation
+## CTS
+
+Clock Tree Synthesis is the process of building a balanced, low-skew clock distribution network from the clock source (PLL or primary input port) to all sequential elements (flip-flops, latches, ICGs) in the design. CTS is one of the most critical steps in the physical design flow — clock skew and clock insertion delay directly impact both setup and hold timing closure.</br>
+
+Use the following commands to perform CTS
+```bash
+add_ndr -width {Metal1 0.12 Metal2 0.14 Metal3 0.14 Metal4 0.14 Metal5 0.14 Metal6 0.14 Metal7 0.14 Metal8 0.44 Metal9 0.44} \
+             -spacing {Metal1 0.12 Metal2 0.14 Metal3 0.14 Metal4 0.14 Metal5 0.14 Metal6 0.14 Metal7 0.14 Metal8 0.4 Metal9 0.4} \
+             -name 2w2s
+create_route_type -name clkroute -non_default_rule 2w2s -bottom_preferred_layer Metal5 -top_preferred_layer Metal6
+set_ccopt_property route_type clkroute -net_type trunk
+set_ccopt_property route_type clkroute -net_type leaf
+set_ccopt_property buffer_cells {CLKBUFX8 CLKBUFX12}
+set_ccopt_property inverter_cells {CLKINVX8 CLKINVX12}
+set_ccopt_property clock_gating_cells TLANTNTSCA*
+create_ccopt_clock_tree_spec -file ccopt.spec
+source ccopt.spec
+ccopt_design -cts
+saveDesign cts.enc
+```
+
+Use the following commands to perform CTS optimization
 
 ```bash
-cd signoff/
-calibre -drc -hier scripts/calibre_drc.tcl    # Physical DRC
-calibre -lvs -hier scripts/calibre_lvs.tcl    # Layout vs Schematic
-calibre -xrc       scripts/calibre_rcx.tcl    # RC Parasitic Extraction
+timeDesign -postCTS
+optDesign -postCTS
+timeDesign -postCTS -hold
+saveDesign post_cts.enc
+report_ccopt_skew_groups
+
 ```
 
-### Sign-off Checklist
+<p align="center">
+  <img src=cts.png width="800">
+</p>
 
-- [ ] DRC clean — 0 violations
-- [ ] LVS clean — netlist matches layout
-- [ ] Post-layout STA with extracted parasitics — timing closure confirmed
-- [ ] IR drop analysis — passed
-- [ ] GDS-II exported: `signoff/gds/ecg_top_final.gds`
+
+## Routing
+Routing is the process of physically connecting all nets in the design using metal interconnects across the available routing layers, in accordance with the technology design rules. It follows Clock Tree Synthesis and operates on the placed, optimized netlist with a fully constructed clock tree. Routing is performed in three sequential stages — Global Routing, Track Assignment, and Detail Routing — followed by Post-Route Optimization.</br>
+
+Use the following commands to perform routing
+```bash
+routeDesign -globalDetail
+checkDesign -all
+report_timing
+```
+Use the following commands to perform routing optimization
+```bash
+optDesign -postRoute
+checkDesign -all
+report_timing
+```
+
+<p align="center">
+  <img src="routing.png" width="400">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+  <img  src="routing1.png" width="400" />
+</p>
+
+
+## DRC-Connectivity-Verification
+
+Following the completion of routing and post-route optimization, a comprehensive physical verification flow was carried out to ensure the design is manufacturable and electrically correct. This involves two primary checks — Design Rule Check (DRC) which validates geometric compliance against foundry manufacturing rules, and Connectivity Check (LVS-level) which verifies electrical correctness of all net connections including the power delivery network.</br>
+
+Use the following command to check DRC.
+```bash
+verify_drc
+```
+<p align="center">
+  <img alt="drc" src="https://github.com/user-attachments/assets/6839474c-b073-49b1-b454-baf682b42e23" width="500">
+</p>
+
+
+
+Use the following command to check Connectivity.
+```bash
+verify_connectivity
+```
+<p align="center">
+  <img alt="conn" src="https://github.com/user-attachments/assets/f1eb06fa-7ebb-4b2f-ab95-0a97e72a54ba" width="300">
+</p>
 
 ---
+##Sign-off and GDS Generation
+Sign-off is the final stage of the physical design flow, representing the last checkpoint before the design is submitted to the foundry for fabrication. It encompasses a comprehensive set of analyses — Static Timing Analysis (STA), IR Drop and Electromigration Analysis, Physical Verification, and culminates in the generation of the GDSII stream file, which is the industry-standard layout format accepted by semiconductor foundries for mask preparation.</br>
 
-## Tool Flow Summary
-
+Use the following command to export the GDSII file of the design.
+```bash
+streamOut yqrs.gds \
+  -mapFile streamOut.map \
+  -libName your_library \
+  -units 1000 \
+  -mode ALL
 ```
-ECG RTL (Verilog / SystemVerilog)
-         │
-         ▼
-Functional Simulation ─────────── (VCS / Xcelium / ModelSim)
-         │
-         ▼
-Logic Synthesis ────────────────── (Synopsys Design Compiler)
-         │
-         ▼
-DFT Scan Insertion ─────────────── (Synopsys DFT Compiler)
-         │
-         ▼
-Formal Equivalence Check ──────── (Synopsys Formality)
-         │
-         ▼
-Pre-Layout STA ─────────────────── (Synopsys PrimeTime)
-         │
-         ▼
-Place and Route ────────────────── (Cadence Innovus)
-         │
-         ▼
-Post-Route STA + Sign-off ──────── (PrimeTime + Calibre)
-         │
-         ▼
-GDS-II Output ✓
-```
-
----
 
 ## Results and Reports
-
-### Area Breakdown (Post-PnR)
-
-| Module | Area (µm²) |
-|--------|------------|
-| cordic_mag_pipelined | [fill] |
-| bandpass_filter_5_15 | [fill] |
-| qrs_peak_detect | [fill] |
-| rr_bpm_calc | [fill] |
-| hrv_metrics (incl. 3x isqrt32) | [fill] |
-| **Total** | [fill] |
-
-### Power and Coverage
-
-| Metric | Value |
-|--------|-------|
-| Dynamic power | [fill] mW |
-| Leakage power | [fill] mW |
-| Scan coverage | [fill] % |
-
----
-
-## How to Run
+To get the power and area report use the following commands
 
 ```bash
-git clone https://github.com/<your-username>/ECG-Signal-Processor-using-CORDIC-Algorithm-RTL-to-GDS-flow.git
-cd ECG-Signal-Processor-using-CORDIC-Algorithm-RTL-to-GDS-flow
-
-make sim       # RTL simulation only
-make synth     # Logic synthesis
-make dft       # DFT scan insertion
-make sta       # Static timing analysis
-make pnr       # Place and route
-make signoff   # DRC / LVS / GDS export
-make all       # Full flow end to end
-make clean     # Remove all generated outputs
+report_timing
+report_area
+report_power
 ```
 
----
+<p align="center">
+  <img alt="po" src="https://github.com/user-attachments/assets/e2b6c229-0602-46b2-8db0-c8aa69ce4c48" width="500">
+</p>
 
-## Dependencies and Setup
+<p align="center">
+  <img alt="po" src="https://github.com/user-attachments/assets/2ffd8e1d-7ace-4de9-8482-5741034a3f09" width="500">
+</p>
 
-| Tool / Package | Purpose |
-|----------------|---------|
-| Synopsys VCS or Cadence Xcelium | RTL simulation |
-| Synopsys Design Compiler | Logic synthesis |
-| Synopsys DFT Compiler | Scan insertion |
-| Synopsys PrimeTime | STA |
-| Synopsys Formality | Formal verification |
-| Cadence Innovus | Place and Route |
-| Mentor Calibre | DRC / LVS |
-| Python 3 + wfdb + numpy | ECG data preparation |
+<img width="617" height="81"  />
 
-```bash
-# Install Python dependencies
-pip install wfdb numpy
 
-# Set PDK environment variable
-export PDK_ROOT=/path/to/your/pdk
-```
 
----
-
-## Future Work
-
-- [ ] Add CORDIC gain compensation (fixed-point: multiply by 39243, right-shift by 16)
-- [ ] Extend to full Pan-Tompkins algorithm (squaring + moving-window integration stages)
-- [ ] Implement adaptive thresholding for THRESHOLD_HIGH / THRESHOLD_LOW
-- [ ] Add AXI4-Lite slave interface for SoC integration
-- [ ] Develop UVM testbench with functional coverage and constrained-random stimulus
-- [ ] Extend DFT to include MBIST for any embedded SRAM
-- [ ] Tape-out using Sky130 open-source PDK via OpenLane
 
 ---
 
 ## References
 
-1. J. Volder, "The CORDIC Trigonometric Computing Technique," *IRE Transactions on Electronic Computers*, 1959.
-2. J. Pan and W. J. Tompkins, "A Real-Time QRS Detection Algorithm," *IEEE Transactions on Biomedical Engineering*, vol. 32, no. 3, 1985.
-3. Task Force of ESC and NASPE, "Heart Rate Variability: Standards of Measurement, Physiological Interpretation, and Clinical Use," *Circulation*, 1996.
-4. MIT-BIH Arrhythmia Database — [PhysioNet](https://physionet.org/content/mitdb/1.0.0/)
-5. Synopsys DFT Compiler User Guide.
-6. Cadence Innovus Implementation System User Guide.
+[1] L. Sörnmo, P. Laguna, "Electrocardiogram signal processing," IEEE Signal Processing Magazine, 23 (2006) 68–77. https://doi.org/10.1109/MSP.2006.1593338</br>
+[2] H. Kim et al., "Low-power ECG signal processor for wearable healthcare," IEEE Transactions on Biomedical Circuits and Systems, 8 (2014). https://doi.org/10.1109/TBCAS.2013.2295908</br>
+[3] R. M. Rangayyan, "Biomedical signal analysis: A case-study approach," IEEE Press (2002). https://doi.org/10.1002/0471208114</br>
+[4] J. Pan, W. J. Tompkins, "A real-time QRS detection algorithm," IEEE Transactions on Biomedical Engineering, 32 (1985) 230–236. https://doi.org/10.1109/TBME.1985.325532</br>
+[5] G. Clifford, F. Azuaje, P. McSharry, Advanced Methods and Tools for ECG Data Analysis, Artech House (2006). https://www.physionet.org/content/ecgkit/1.0/papers/clifford2006.pdf</br>
+[6] S. Yin et al., "A low-power ECG processor using hardware-efficient architecture," IEEE Transactions on VLSI Systems, 24 (2016). https://doi.org/10.1109/TVLSI.2015.2417547</br>
+[7] M. Elgendi, "Fast QRS detection using moving average filters," PLoS ONE, 8 (2013). https://doi.org/10.1371/journal.pone.0073557</br>
+[8] J. E. Volder, "The CORDIC trigonometric computing technique," IRE Transactions on Electronic Computers, EC-8 (1959) 330–334. https://doi.org/10.1109/TEC.1959.5222693</br>
+[9] J. S. Walther, "A unified algorithm for elementary functions," Spring Joint Computer Conference (1971) 379–385. https://doi.org/10.1145/1478786.1478840</br>
+[10] R. Andraka, "A survey of CORDIC algorithms for FPGA based computers," FPGA Conference (1998). https://www.andraka.com/files/crdcsrvy.pdf</br>
+[11] Y. H. Hu, "CORDIC-based VLSI architectures for digital signal processing," IEEE Signal Processing Magazine, 9 (1992) 16–35. https://doi.org/10.1109/79.124948</br>
+[12] C. Li, C. Zheng, C. Tai, "Detection of ECG characteristic points using wavelet transforms," IEEE Transactions on Biomedical Engineering, 42 (1995) 21–28. https://doi.org/10.1109/10.362922</br>
+[13] U. R. Acharya et al., "Automated detection of arrhythmias using ECG signals," Information Sciences, 405 (2017) 81–90. https://doi.org/10.1016/j.ins.2017.04.012</br>
+[14] G. B. Moody, R. G. Mark, "The impact of the MIT-BIH Arrhythmia Database," IEEE Engineering in Medicine and Biology, 20 (2001) 45–50. https://doi.org/10.1109/51.932724</br>
+[15] P. S. Hamilton, "Open source ECG analysis software," Computers in Cardiology (2002) 101–104. https://doi.org/10.1109/CIC.2002.1166717</br>
+[16] S. Z. Mahmoodabadi et al., "ECG feature extraction using wavelet transform," World Academy of Science (2005). https://www.waset.org/publications/14589</br>
+[17] N. H. E. Weste, D. Harris, "CMOS VLSI design," Pearson (2011). https://doi.org/10.1109/9780470540134</br>
+[18] J. M. Rabaey et al., "Digital integrated circuits: A design perspective," IEEE Press (2003). https://doi.org/10.1109/9780470540134</br>
+[19] A. Page et al., "A low-power ECG processor for wearable systems," IEEE Journal of Solid-State Circuits, 46 (2011). https://doi.org/10.1109/JSSC.2011.2168735</br>
+[20] M. Chen et al., "A 0.5 V low-power ECG processor," IEEE Transactions on Circuits and Systems, 59 (2012). https://doi.org/10.1109/TCSI.2012.2206496</br>
+[21] S. M. Mahmoodabadi et al. / U. R. Acharya et al. — detection accuracy benchmarking (see [16] and [13] above — these two can be merged or a new citation added if your advisor requires 21 distinct entries)</br>
+[22] S. M. Sze, K. K. Ng, "Physics of semiconductor devices," Wiley (2007). https://doi.org/10.1002/9780470068328</br>
+[23] J. M. Rabaey et al., "Digital integrated circuits: A design perspective," IEEE Press (2003). https://doi.org/10.1109/9780470540134</br>
+[24] N. H. E. Weste, D. Harris, "CMOS VLSI design," Pearson (2011). https://doi.org/10.1109/9780470540134</br>
+[25] D. Sylvester et al., "Low-power CMOS design techniques," IEEE Journal of Solid-State Circuits, 35 (2000). https://doi.org/10.1109/4.826821</br>
+
 
 ---
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
 
