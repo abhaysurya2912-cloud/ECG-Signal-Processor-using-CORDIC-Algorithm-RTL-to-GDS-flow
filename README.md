@@ -58,14 +58,21 @@ The design is taken through a complete **RTL-to-GDS (tape-out-ready) physical de
 ---
 
 ## Block Diagram
+<p align="center">
+  <img src="WhatsApp Image 2026-04-19 at 11.27.33 PM.jpeg" width="500">
+</p>
 
-<img src="WhatsApp Image 2026-04-19 at 11.27.33 PM.jpeg" width="300">
+
 
 ---
 
 ## CORDIC Algorithm — Theory
 
-<img src="Screenshot 2026-04-20 183536.png" width="300">
+<p align="center">
+  <img src="WhatsApp Image 2026-04-19 at 11.27.33 PM.jpeg" width="500">
+</p>
+![Uploading ECG_Processor_Block_Diagram_4K.png…]()
+
 
 The **CORDIC (Coordinate Rotation Digital Computer)** algorithm computes trigonometric, hyperbolic, and vector magnitude functions using only **additions, subtractions, and bit shifts** — making it ideal for resource-constrained hardware with no dedicated multiplier units.
 
@@ -1669,94 +1676,38 @@ The following collateral was provided as part of the MMMC setup.</br>
 LEF Files — Technology and cell-level abstract views defining routing layers, design rules, and cell geometries.</br>
 Liberty Files (.lib) — Timing, power, and functional characterization libraries for the target process corner by providing slow.lib and fast.lib.</br>
 Capacitance Table (CapTable) Files — Interconnect parasitics data used for accurate RC extraction at the specified process corner.</br>
+Click Analysis Configuration for MMMC file setup.</br>
 <p align="center">
-  <img src="innovusfilesetup.png" width="33%" />
-  <img src="innovus1.png" width="33%" />
-     <img src="innovus2.png" width="33%" />
+  <img src="innovusfilesetup.png" width="30%" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="innovus1.png" width="30%" />
 </p>
-### Scan Configuration Script
-
-```tcl
-set_dft_signal -view existing_dft -type ScanClock  -port clk -timing {45 55}
-set_dft_signal -view spec         -type Reset       -port reset_n -active_state 0
-set_dft_signal -view spec         -type ScanEnable  -port scan_en -active_state 1
-set_dft_signal -view spec         -type ScanDataIn  -port scan_in
-set_dft_signal -view spec         -type ScanDataOut -port scan_out
-
-set_scan_configuration -chain_count 1
-create_test_protocol
-dft_drc
-preview_dft
-insert_dft
-
-write_scan_def -output dft/def/ecg_top_scan.def
-write_verilog  dft/netlists/ecg_top_scan.v
-```
-
-### DFT Results
-
-| Metric | Value |
-|--------|-------|
-| Scan flip-flops | [fill] |
-| Scan chains | 1 |
-| Scan coverage | [fill] % |
-| DFT DRC violations | 0 (target) |
-
----
-
-## Static Timing Analysis (STA)
-
-### Tool: Synopsys PrimeTime
+<p align="center">
+  <img src="innovus2.png" width="30%" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="lef.png" width="30%" />
+</p>
+### Configuring global nets for the design
+The following commands will set up global nets.
 
 ```bash
-cd sta/
-pt_shell -f scripts/primetime_sta.tcl | tee logs/sta.log
+globalNetConnect VDD -type pgpin -pin VDD -all
+globalNetConnect VSS -type pgpin -pin VSS -all
+globalNetConnect VSS -type tielo
+globalNetConnect VDD -type tiehi
 ```
 
-| Check | Corner | WNS | TNS | Status |
-|-------|--------|-----|-----|--------|
-| Setup | WCS (Slow) | [fill] ns | [fill] ns | [PASS/FAIL] |
-| Hold | BCF (Fast) | [fill] ns | [fill] ns | [PASS/FAIL] |
+### Floorplanning
 
----
-
-## Formal Verification
-
-### Tool: Synopsys Formality
+Floorplanning is the first physical design step performed after the MMMC environment is set up. It defines the overall die area, core area, I/O placement, and macro placement — establishing the physical foundation for all subsequent implementation stages.
 
 ```bash
-cd formal/
-fm_shell -f scripts/formality.tcl | tee logs/formality.log
+floorPlan -coreMarginsBy die -site gpdk090site -r 1 0.7 8 8 8 8
 ```
+<p align="center">
+  <img src="floorplanning.png" width="500">
+</p>
 
-| Check | Result |
-|-------|--------|
-| RTL vs Post-synthesis netlist | [EQUIVALENT] |
-| Post-synthesis vs Post-DFT netlist | [EQUIVALENT] |
-
----
-
-## Physical Design (PnR)
-
-### Tool: Cadence Innovus
-
-```bash
-cd pnr/
-innovus -batch -src scripts/innovus_pnr.tcl | tee logs/innovus.log
-```
-
-Flow steps: Floorplanning → Power Planning → Placement → CTS → Post-CTS Optimization → Routing → Post-Route ECO → Filler/Decap Insertion.
-
-### PnR Results
-
-| Metric | Value |
-|--------|-------|
-| Die area | [fill] µm² |
-| Core utilization | [fill] % |
-| Clock skew | [fill] ps |
-| Routing DRC violations | 0 (target) |
-
----
 
 ## Sign-off and GDS Generation
 
