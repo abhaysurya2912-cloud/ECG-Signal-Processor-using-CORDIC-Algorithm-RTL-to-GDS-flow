@@ -1909,7 +1909,7 @@ verify_connectivity
 </p>
 
 ---
-##Sign-off and GDS Generation
+## Sign-off and GDS Generation
 Sign-off is the final stage of the physical design flow, representing the last checkpoint before the design is submitted to the foundry for fabrication. It encompasses a comprehensive set of analyses — Static Timing Analysis (STA), IR Drop and Electromigration Analysis, Physical Verification, and culminates in the generation of the GDSII stream file, which is the industry-standard layout format accepted by semiconductor foundries for mask preparation.</br>
 
 Use the following command to export the GDSII file of the design.
@@ -1938,7 +1938,6 @@ report_power
   <img alt="po" src="https://github.com/user-attachments/assets/2ffd8e1d-7ace-4de9-8482-5741034a3f09" width="500">
 </p>
 
-<img width="617" height="81"  />
 ---
 
 ## References
