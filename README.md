@@ -59,7 +59,7 @@ The design is taken through a complete **RTL-to-GDS (tape-out-ready) physical de
 
 ## Block Diagram
 <p align="center">
-  <img src="WhatsApp Image 2026-04-19 at 11.27.33 PM.jpeg" width="500">
+  <img alt="BlockDiagram" src="https://github.com/user-attachments/assets/a0317721-de1a-4086-9290-1438c77dec27" width="500"/>
 </p>
 
 
@@ -69,9 +69,9 @@ The design is taken through a complete **RTL-to-GDS (tape-out-ready) physical de
 ## CORDIC Algorithm — Theory
 
 <p align="center">
-  <img src="WhatsApp Image 2026-04-19 at 11.27.33 PM.jpeg" width="500">
+  <img alt="cordic" src="https://github.com/user-attachments/assets/fcd3c667-d8ff-4b82-aef9-600dc2929469"" width="30%" />
 </p>
-![Uploading ECG_Processor_Block_Diagram_4K.png…]()
+
 
 
 The **CORDIC (Coordinate Rotation Digital Computer)** algorithm computes trigonometric, hyperbolic, and vector magnitude functions using only **additions, subtractions, and bit shifts** — making it ideal for resource-constrained hardware with no dedicated multiplier units.
