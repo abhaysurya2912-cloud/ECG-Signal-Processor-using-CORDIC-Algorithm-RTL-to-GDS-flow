@@ -1664,12 +1664,16 @@ innovus
 ```
 ### Setting up MMMC file
 
-Prior to initiating placement, the MMMC (Multi-Mode Multi-Corner) environment was configured to define the timing corners and constraints required for sign-off accurate analysis.
-The following collateral was provided as part of the MMMC setup:
-LEF Files — Technology and cell-level abstract views defining routing layers, design rules, and cell geometries
-Liberty Files (.lib) — Timing, power, and functional characterization libraries for the target process corner
-Capacitance Table (CapTable) Files — Interconnect parasitics data used for accurate RC extraction at the specified process corner
-<img src="Screenshot from 2026-04-09 03-30-08.png" width="1000">
+Prior to initiating placement, the MMMC (Multi-Mode Multi-Corner) environment was configured to define the timing corners and constraints required for sign-off accurate analysis.</br>
+The following collateral was provided as part of the MMMC setup.</br>
+LEF Files — Technology and cell-level abstract views defining routing layers, design rules, and cell geometries.</br>
+Liberty Files (.lib) — Timing, power, and functional characterization libraries for the target process corner by providing slow.lib and fast.lib.</br>
+Capacitance Table (CapTable) Files — Interconnect parasitics data used for accurate RC extraction at the specified process corner.</br>
+<p align="center">
+  <img src="innovusfilesetup.png" width="33%" />
+  <img src="innovus1.png" width="33%" />
+     <img src="innovus2.png" width="33%" />
+</p>
 ### Scan Configuration Script
 
 ```tcl
