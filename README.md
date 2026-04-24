@@ -21,7 +21,7 @@
    - [HRV Metrics Module](#hrv-metrics-module)
 7. [Testbench](#testbench)
 8. [Functional Simulation](#functional-simulation)
-9. [Pantopkins Algorithm functional verification](#Pantopkins-Algorithm-functional-verification)
+9. [Pan-Tompkins Algorithm functional verification](#Pan-Tompkins-Algorithm-functional-verification)
 10. [Synthesis](#synthesis)
 11. [Placement](#Placement)
 12. [CTS](#CTS)
@@ -1008,7 +1008,7 @@ Once all necessary design files are added to the Vivado working directory, the s
 <img src="wave.jpeg" width="3000">
 
 
-## Pantopkins Algorithm functional verification
+## Pan-Tompkins Algorithm functional verification
 
 To verify the correctness of our ECG signal processing design, we use the Pan-Tompkins Algorithm.
 
