@@ -1939,10 +1939,6 @@ report_power
 </p>
 
 <img width="617" height="81"  />
-
-
-
-
 ---
 
 ## References
