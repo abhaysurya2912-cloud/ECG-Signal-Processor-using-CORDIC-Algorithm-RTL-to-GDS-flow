@@ -1708,6 +1708,123 @@ floorPlan -coreMarginsBy die -site gpdk090site -r 1 0.7 8 8 8 8
   <img src="floorplanning.png" width="500">
 </p>
 
+### Powerplanning
+Power planning establishes the Power Delivery Network (PDN) — a robust grid structure that ensures adequate voltage supply and ground return paths across the entire die. A well-designed PDN minimizes IR drop and electromigration risk. The power planning flow consists of three sequential steps: Power Ring creation, Power Stripe addition, and Special Route for standard cell rail connection.</br>
+
+#### Power Ring Creation
+Power rings were added around the periphery of the core area, forming a closed loop that connects the VDD and VSS supply nets. These rings serve as the primary power reservoir from which all internal stripes draw current.</br>
+
+<p align="center">
+  <img src="power.png" width="30%" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="power1.png" width="30%" />
+       &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="power2.png" width="30%" />
+</p>
+
+<p align="center">
+  <img src="powerplanningout.png" width="500">
+</p>
+
+#### Power Stripe Addition
+Power stripes were routed across the core interior in both horizontal and vertical directions, forming a mesh-style PDN. This two-dimensional grid ensures every region of the die is within close proximity to a supply rail.</br>
+<p align="center">
+  <img src="powerstrip.png" width="30%" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="powerstrip1.png" width="30%" />
+       &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="powerstrip2.png" width="30%" />
+</p>
+
+<p align="center">
+  <img src="powerplanning.png" width="300">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="powerplan.png" width="300" />
+</p>
+
+
+#### Special Route — Standard Cell Power Rail Connection
+The final step of PDN construction connects the internal power mesh down to the standard cell power rails (VDD and VSS) at the M1 layer. This is performed using sroute, which automatically routes the power connections between the stripes/rings and the cell-level VPWR/VGND pins.</br>
+
+<p align="center">
+  <img src="special.png" width="300">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="special1.png" width="300" />
+</p>
+
+<p align="center">
+  <img src="specialpic.png" width="500">
+</p>
+
+#### Endcaps
+End cap cells (also referred to as boundary cells) are physical-only cells inserted at the left and right boundaries of every standard cell row in the design. They serve no logical function but are mandatory from a physical and electrical standpoint — ensuring row integrity, preventing well and diffusion edge effects, and satisfying DRC requirements at row terminations.</br>
+
+<p align="center">
+  <img alt="cap" src="https://github.com/user-attachments/assets/291bbec0-a973-4381-88ca-2dcbaa4691a3"  width="300">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+  <img  alt="cap1" src="https://github.com/user-attachments/assets/4be58b86-a195-4981-a173-a53a00614b3a" width="300" />
+</p>
+
+<p align="center">
+  <img alt="cap2" src="https://github.com/user-attachments/assets/750f9030-2183-4ee4-998a-d61b0b6e48c6" width="500">
+</p>
+
+
+### Pin-Placement
+Pin placement defines the physical location of all primary input/output (I/O) ports of the design on the die boundary. Proper pin assignment is critical for minimizing wire length to connected logic, avoiding routing congestion near the boundary, and ensuring compatibility with package or top-level connectivity requirements.In Innovus, pins are placed along the four edges of the die — left, right, top, and bottom.</br>
+
+<p align="center">
+  <img alt="pin1" src="https://github.com/user-attachments/assets/4bf6be0b-4594-44f2-af90-f893834ed94f" width="300">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+  <img  alt="pin3" src="https://github.com/user-attachments/assets/8ad35acc-5caa-446e-a054-1542f9d36898" width="300" />
+</p>
+
+<p align="center">
+  <img alt="pin2" src="https://github.com/user-attachments/assets/8eed82b9-db7f-4483-b944-6b4f15fed67b" width="500">
+</p>
+
+#### Checking the legality of pins
+After pin placement, a legality check was performed to ensure all I/O pins conform to design rule constraints, are correctly assigned to valid metal layers, and have no spacing or overlap violations. This step must be completed and cleared before proceeding to standard cell placement.</br>
+The below command is used to check the legality of Pins. </br>
+
+```bash
+checkPinAssignment
+```
+<p align="center">
+  <img alt="chek" src="https://github.com/user-attachments/assets/98bbaa20-71e4-40a2-bd83-a7966e73f0a0"  width="500">
+</p>
+In order to legalize the pin use the below command
+
+```bash
+legalizePin -all
+```
+<p align="center">
+  <img alt="chek1" src="https://github.com/user-attachments/assets/5e11c2da-0f28-439e-830c-1cc2382b9c53" width="500">
+</p>
+
+### Placement
+Standard cell placement is the process of legally positioning all synthesized logic cells within the core area, satisfying timing, congestion, and design rule constraints. In Innovus, placement is performed in two stages — coarse placement followed by placement optimization — collectively referred to as place_opt.</br>
+
+The following commands are used for Placement.
+```bash
+place_design
+report_timing
+checkDesign -place
+saveDesign place.enc
+```
+
+For optimization following commands are used
+
+```bash
+optDesign -preCTS
+report_timing
+checkDesign -place
+saveDesign placeopt.enc
+
+```
+<p align="center">
+  <img src=place.png width="500">
+</p>
 
 ## Sign-off and GDS Generation
 
